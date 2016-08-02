@@ -62,11 +62,19 @@ def change_location_(gps_button_pos, gpx_file_pos, lat_lng_string):
     click_button(last_pos)
 
 
-def get_button_position():
-    print("GPS button에 커서를 올려주세요.")
+def initialize():
+    if not os.getenv('GOOGLE_API_KEY'):
+        print('*' * 80)
+        print('You must set GOOGLE_API_KEY to OS environments.')
+        print('Please check https://developers.google.com/maps/documentation/javascript/get-api-key')
+        print("export GOOGLE_API_KEY='blahblah' to ~/.bash_profile")
+        print('*' * 80)
+        raise NameError('GOOGLE_API_KEY')
+
+    print("Cursor on GPS button of xcode.")
     input("press enter to continue")
     gps_button_pos = pyautogui.position()
-    print("GPX file에 커서를 올려주세요.")
+    print("Cursor on GPX file of xcode. (pikapika.gpx)")
     input("press enter to continue")
     gpx_file_pos = pyautogui.position()
     return gps_button_pos, gpx_file_pos
@@ -82,8 +90,11 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.set_headers()
 
+        api_key = bytes(os.getenv('GOOGLE_API_KEY').encode('utf-8'))
         with open(os.getcwd() + '/map.html', 'rb') as fileHandle:
-            self.wfile.write(fileHandle.read())
+            html = fileHandle.read()
+            html = html.replace(b'{{GOOGLE_MAP_API_KEY}}', api_key)
+            self.wfile.write(html)
 
     def do_POST(self):
         self.set_headers()
@@ -94,8 +105,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-
-    change_location = functools.partial(change_location_, *get_button_position())
+    change_location = functools.partial(change_location_, *initialize())
 
     HTTPDeamon = HTTPServer(('', PORT), HTTPRequestHandler)
     _thread.start_new_thread(open_browser, ())
