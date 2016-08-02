@@ -29,7 +29,7 @@ def open_browser():
 
 
 def get_last_location():
-    with open('pikapika.gpx', mode='r', encoding='utf-8') as f:
+    with open(GPX_FILENAME, mode='r', encoding='utf-8') as f:
         xml = f.read()
     l = re.findall(r'([laton]{3})="([\d.-]+)"', xml)
     return urlencode(dict(l))
@@ -42,7 +42,7 @@ def rewrite_gpx(lat_lng):
                       xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
                       <wpt lat="{lat}" lon="{lng}"></wpt>
                   </gpx>'''.format(**lat_lng)
-    with open('pikapika.gpx', mode='w', encoding='utf-8') as f:
+    with open(GPX_FILENAME, mode='w', encoding='utf-8') as f:
         f.write(template)
 
 
