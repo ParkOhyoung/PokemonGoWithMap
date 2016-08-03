@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import functools
 import os
 import pyautogui
 import re
@@ -46,20 +45,16 @@ def rewrite_gpx(lat_lng):
         f.write(template)
 
 
-def change_location_(gps_button_pos, gpx_file_pos, lat_lng_string):
+def change_location_(gps_button_pos, gpx_file_pos):
+    def real_change(lat_lng_string):
+        last_pos = pyautogui.position()
+        lat_lng = dict(re.findall(r'([latng]{3})\=([\d\.\-]+)', lat_lng_string))
+        rewrite_gpx(lat_lng)
+        for pos in gps_button_pos, gpx_file_pos, last_pos:
+            pyautogui.moveTo(pos)
+            pyautogui.click()
 
-    def parse_latlng(lat_lng_string):
-        return dict(re.findall(r'([latng]{3})\=([\d\.\-]+)', lat_lng_string))
-
-    def click_button(pos):
-        pyautogui.moveTo(pos)
-        pyautogui.click()
-    last_pos = pyautogui.position()
-    lat_lng = parse_latlng(lat_lng_string)
-    rewrite_gpx(lat_lng)
-    click_button(gps_button_pos)
-    click_button(gpx_file_pos)
-    click_button(last_pos)
+    return real_change
 
 
 def initialize():
@@ -105,7 +100,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    change_location = functools.partial(change_location_, *initialize())
+    change_location = change_location_(*initialize())
 
     HTTPDeamon = HTTPServer(('', PORT), HTTPRequestHandler)
     _thread.start_new_thread(open_browser, ())
