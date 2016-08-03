@@ -130,9 +130,7 @@
                 });
 
                 var input = /** @type {!HTMLInputElement} */(document.getElementById('pac-input'));
-                var types = document.getElementById('type-selector');
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
                 var autocomplete = new google.maps.places.Autocomplete(input);
                 autocomplete.bindTo('bounds', map);
                 autocomplete.addListener('place_changed', function() {
@@ -149,15 +147,17 @@
                     params[key] = value;
                 });
 
+                initCircle();
+
                 if (! $.isEmptyObject(params) && confirm('Do you using last location?')) {
-                    map.setCenter({
+                    addMarker({
                         lat: parseFloat(params['lat']),
                         lng: parseFloat(params['lon'])
                     });
                 } else {
                     geocoder = new google.maps.Geocoder;
                     navigator.geolocation.getCurrentPosition(function(position) {
-                        map.setCenter({
+                        addMarker({
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         });
@@ -167,13 +167,11 @@
                 map.addListener('click', function(event) {
                     clickAction(event);
                 });
-
-                initCircle();
             }
         </script>
         <script
             src="https://maps.googleapis.com/maps/api/js?libraries=places&amp;key={{GOOGLE_MAP_API_KEY}}&amp;callback=initMap"
-            async defer></script>  <!-- https://developers.google.com/maps/documentation/javascript/get-api-key //-->
+            async defer></script>
     </head>
     <body>
         <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
