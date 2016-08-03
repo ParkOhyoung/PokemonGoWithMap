@@ -7,22 +7,23 @@
 ![Running Image](https://cloud.githubusercontent.com/assets/8384193/17329134/39baa8b2-58fc-11e6-81b8-ddea92905ae3.png)
 
 ###간단한 실행 설명
-1. xcode를 실행하여 기본 프로젝트를 생성한다 (그냥 next, next...)
+1. 본 레파지토리의 `sample.gpx`를 `pikapika.gpx`로 이름을 변경한다. 
+2. xcode를 실행하여 기본 프로젝트를 생성한다 (그냥 next, next...)
     * 생성 되었으면 `Product->Scheme->Edit Scheme` 로 가서 `Core location` 체크박스에 체크 되어 있는것 확인 (안되어 있으면 체크)
     * 바로 아래 `Default Location` select box에서 `Add GPX File to Project`를 클릭하여 본 레파지토리에 포함된 `pikapika.gpx`를 등록한다.
-2. xcode를 최대한 줄여서 아래쪽에 놓고 아이폰을 연결한 후 xcode의 `▶` 를 클릭한다.
-3. 터미널로 가서 `python runserver.py`로 실행
+3. xcode를 최대한 줄여서 아래쪽에 놓고 아이폰을 연결한 후 xcode의 `▶` 를 클릭한다.
+4. 터미널로 가서 `python runserver.py`로 실행
     * OS env에 `GOOGLE_API_KEY`가 있는지 체크하여 없으면 설명과 함께 실행을 멈춘다.
     * xcode의 gps 버튼 위에 마우스를 놓고 터미널로 돌아와(Cmd+tab을 이용) `Enter`
     * xcode의 gps 버튼을 누르면 '1.'에서 등록한 `pikapika.gpx`가 보인다 그위에 마우스를 놓고 위와 같은 방법으로 터미널로 돌아와 `Enter`
-4. 간단한 웹서버가 돌기 시작하면서 Chrome이 자동으로 켜지면 게임을 플레이할 준비완료 
+5. 간단한 웹서버가 돌기 시작하면서 Chrome이 자동으로 켜지면 게임을 플레이할 준비완료 
     * 마지막 좌표에서 실행할지 현재 위치에서 실행할지 물어 보고 해당 위치로 이동하면 준비 완료
     * 중요!! Chrome을 전체모드로 하지말고 xcode의 gps 버튼이 화면에 보이도록 해야한다.
     * 위 이미지는 설명을 위해 `Quicktime`과 `터미널`을 보이게 해 놓았으나 안보여도 게임에 지장 없습니다. 
-5. 아이폰에서 현재 앱을 백그라운드로 돌리고 `Pokemon Go`를 실행하면 맵에 보이는 지역에서 게임을 시작하게 된다.
+6. 아이폰에서 현재 앱을 백그라운드로 돌리고 `Pokemon Go`를 실행하면 맵에 보이는 지역에서 게임을 시작하게 된다.
     * 작은 파란색 원은 10m, 빨간 원은 30m 거리를 나타내고 해당 원은 현재 위치 마커를 따라 다닌다.
     * 왼쪽 상단에 있는 검색 박스를 통해 전세계 어디든 이동 또는 시작할 수 있다.
-6. 게임 시작.
+7. 게임 시작.
 
 #### *주의! 정상적 Play가 아니기에 언제든 Ban(block) 당할 수 있습니다.*
 
