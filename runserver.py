@@ -3,6 +3,7 @@
 import os
 import pyautogui
 import re
+import sys
 import time
 import webbrowser
 import _thread
@@ -45,14 +46,15 @@ def rewrite_gpx(lat_lng):
         f.write(template)
 
 
-def change_location_(gps_button_pos, gpx_file_pos):
+def change_location_(js_develop_mode, gps_button_pos, gpx_file_pos):
     def real_change(lat_lng_string):
+        if js_develop_mode:
+            return
         last_pos = pyautogui.position()
         lat_lng = dict(re.findall(r'([latng]{3})\=([\d\.\-]+)', lat_lng_string))
         rewrite_gpx(lat_lng)
         for pos in gps_button_pos, gpx_file_pos, last_pos:
-            pyautogui.moveTo(pos)
-            pyautogui.click()
+            pyautogui.click(*pos)
 
     return real_change
 
@@ -100,7 +102,8 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    change_location = change_location_(*initialize())
+    js_dev_mode = sys.argv[-1] == 'jsdev'
+    change_location = change_location_(js_dev_mode, *initialize())
 
     HTTPDeamon = HTTPServer(('', PORT), HTTPRequestHandler)
     _thread.start_new_thread(open_browser, ())
