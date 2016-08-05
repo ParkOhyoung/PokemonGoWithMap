@@ -13,6 +13,12 @@
             #map {
                 height: 100%;
             }
+            .controls {
+                margin-top: 10px;
+                height: 25px;
+                outline: none;
+                margin-left: 20px;
+            }
             #pac-input {
                 background-color: #fff;
                 font-family: Roboto;
@@ -27,6 +33,21 @@
             }
             #pac-input:focus {
                 border-color: #4d90fe;
+            }
+            .button {
+                background-color: #4CAF50; /* Green */
+                border: 1px solid green;
+                color: white;
+                padding: 5px 5px 6px 5px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 13px;
+                cursor: pointer;
+                float: left;
+            }
+            .button:hover {
+                background-color: #3e8e41;
             }
         </style>
         <script
@@ -48,6 +69,14 @@
                 var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                 var d = R * c;
                 return d * 1000; // meters
+            }
+
+            function removeAllMarkers() {
+                Markers.forEach(function(element, index, array) {
+                    if (array.length - 1 !== index) {
+                        element.setMap(null);
+                    }
+                })
             }
 
             function addMarker(latLng) {
@@ -130,7 +159,9 @@
                 });
 
                 var input = /** @type {!HTMLInputElement} */(document.getElementById('pac-input'));
+                var buttonContainer = document.getElementById('button-container');
                 map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                map.controls[google.maps.ControlPosition.TOP_LEFT].push(buttonContainer);
                 var autocomplete = new google.maps.places.Autocomplete(input);
                 autocomplete.bindTo('bounds', map);
                 autocomplete.addListener('place_changed', function() {
@@ -167,6 +198,9 @@
                 map.addListener('click', function(event) {
                     clickAction(event);
                 });
+                $( "#remove-all-markers" ).click(function() {
+                    removeAllMarkers();
+                });
             }
         </script>
         <script
@@ -175,6 +209,9 @@
     </head>
     <body>
         <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+        <div id="button-container" class="controls">
+            <button class="button" id="remove-all-markers">Remove All markers</button>
+        </div>
         <div id="map"></div>
     </body>
 </html>
