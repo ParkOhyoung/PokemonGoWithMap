@@ -86,6 +86,9 @@
                     map: map,
                     draggable: false
                 });
+                marker.addListener('click', function(event) {
+                    clickAction(event);
+                });
 
                 Markers.push(marker);
                 map.panTo(latLng);
